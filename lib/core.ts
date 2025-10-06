@@ -2,6 +2,7 @@ import { Stack, StackProps } from "aws-cdk-lib"
 import { Construct } from "constructs"
 import * as iam from "aws-cdk-lib/aws-iam"
 import * as github from "xehos-cdk-lib/github"
+import { CIRole } from "./constructs/ci-role.ts"
 
 export class CoreStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
@@ -9,7 +10,8 @@ export class CoreStack extends Stack {
 
         new github.GithubOpenIdConnectProvider(this, "Provider")
 
-        const bootstrapPolicy = new iam.ManagedPolicy(this, "BootstrapCDK", {
+        new iam.ManagedPolicy(this, "BootstrapCDK", {
+            managedPolicyName: "BootstrapCDK",
             description: "base policy required to bootstrap cdk",
             statements: [
                 new iam.PolicyStatement({
@@ -25,22 +27,10 @@ export class CoreStack extends Stack {
             ]
         })
 
-        const policy = new iam.ManagedPolicy(this, "AWSSetup", {
-            statements: [
-                new iam.PolicyStatement({
-                    actions: [
-                        "route53:*"
-                    ],
-                    resources: ["*"]
-                })
-            ]
-        })
-
-        new github.GithubActionRole(this, "AwsSetupRole", {
+        new CIRole(this, "AWSSetup", {
             repository: new github.GithubRepositoryIdentifier("afrigon", "aws-setup"),
-            policies: [
-                bootstrapPolicy,
-                policy
+            actions: [
+                "route53:*"
             ]
         })
     }

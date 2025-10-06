@@ -51,7 +51,7 @@ export class FoundationStack extends Stack {
             ]
         })
 
-        new CIRole(this, "ResumeCIRole", {
+        new CIRole(this, "Resume", {
             repository: new github.GithubRepositoryIdentifier("afrigon", "resume"),
             actions: []
         })
