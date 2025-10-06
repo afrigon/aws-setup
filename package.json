@@ -21,7 +21,7 @@
   "scripts": {
     "lint": "eslint --fix bin lib",
     "type-check": "tsc --noEmit",
-    "deploy-foundation": "cdk deploy foundation-stack"
+    "deploy-foundation": "cdk deploy foundation"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

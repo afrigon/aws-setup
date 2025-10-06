@@ -1,15 +1,16 @@
-import { BaseStack, BaseStackProps } from "xehos-cdk-lib"
+import { Stack, StackProps } from "aws-cdk-lib"
 import { Construct } from "constructs"
 import * as iam from "aws-cdk-lib/aws-iam"
 import * as github from "xehos-cdk-lib/github"
+import * as budgets from "aws-cdk-lib/aws-budgets"
 
-export class FoundationStack extends BaseStack {
-    constructor(scope: Construct, id: string, props: BaseStackProps) {
+export class FoundationStack extends Stack {
+    constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props)
 
-        new github.OpenIdConnectProvider(this, this.context.identifier("github", "oidc-provider"))
+        new github.OpenIdConnectProvider(this, "oidc-provider")
 
-        const bootstrapPolicy = new iam.ManagedPolicy(this, this.context.identifier("bootstrap-cdk"), {
+        const bootstrapPolicy = new iam.ManagedPolicy(this, "bootstrap_cdk", {
             description: "base policy required to bootstrap cdk",
             statements: [
                 new iam.PolicyStatement({
@@ -25,7 +26,7 @@ export class FoundationStack extends BaseStack {
             ]
         })
 
-        const policy = new iam.ManagedPolicy(this, this.context.identifier("aws-setup"), {
+        const policy = new iam.ManagedPolicy(this, "aws_setup", {
             statements: [
                 new iam.PolicyStatement({
                     actions: [
@@ -36,11 +37,54 @@ export class FoundationStack extends BaseStack {
             ]
         })
 
-        new github.GithubActionRole(this, this.context.identifier("github-role"), {
+        new github.GithubActionRole(this, "github_actions", {
             repository: new github.GithubRepositoryIdentifier("afrigon", "aws-setup"),
             policies: [
                 bootstrapPolicy,
                 policy
+            ]
+        })
+
+        const subscriber: budgets.CfnBudget.SubscriberProperty = {
+            address: "aws@frigon.app",
+            subscriptionType: "EMAIL"
+        }
+
+        new budgets.CfnBudget(this, "monthly", {
+            budget: {
+                budgetType: "COST",
+                timeUnit: "MONTHLY",
+                budgetName: "Monthly Budget",
+                budgetLimit: { amount: 100, unit: "USD" }
+            },
+            notificationsWithSubscribers: [
+                {
+                    notification: {
+                        notificationType: "ACTUAL",
+                        comparisonOperator: "GREATER_THAN",
+                        thresholdType: "PERCENTAGE",
+                        threshold: 50
+                    },
+                    subscribers: [subscriber]
+                },
+                {
+                    notification: {
+                        notificationType: "ACTUAL",
+                        comparisonOperator: "GREATER_THAN",
+                        thresholdType: "PERCENTAGE",
+                        threshold: 100
+                    },
+                    subscribers: [subscriber]
+                },
+                {
+                    notification: {
+                        notificationType: "FORECASTED",
+                        comparisonOperator: "GREATER_THAN",
+                        thresholdType: "PERCENTAGE",
+                        threshold: 100
+                    },
+                    subscribers: [subscriber]
+                }
             ]
         })
     }

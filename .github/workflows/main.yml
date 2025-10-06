@@ -1,0 +1,44 @@
+name: deploy
+run-name: "CDK deploy (${{ github.ref_name }})"
+
+on:
+  push:
+    tags: 
+      - "*"
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  NODE_VERSION: 22
+  AWS_REGION: us-east-1
+  AWS_ROLE: TODO_REPLACE_WITH_ARN
+  CDK_STACKS: "frigon"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: $NODE_VERSION
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5.0.0
+        with:
+          aws-region: $AWS_REGION
+          role-to-assume: $AWS_ROLE
+          role-session-name: aws-setup-ci-session
+
+      - name: CDK synth
+        run: npx cdk synth
+
+      - name: CDK deploy
+        run: npx cdk deploy $CDK_STACKS --require-approval never --verbose

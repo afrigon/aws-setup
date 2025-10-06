@@ -1,12 +1,12 @@
-import { BaseStack, BaseStackProps } from "xehos-cdk-lib"
+import { Stack, StackProps } from "aws-cdk-lib"
 import { Construct } from "constructs"
 import * as dns from "xehos-cdk-lib/dns"
 
-export class FrigonStack extends BaseStack {
-    constructor(scope: Construct, id: string, props: BaseStackProps) {
+export class FrigonStack extends Stack {
+    constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props)
 
-        new dns.DNS(this, this.context.identifier("dns"), {
+        new dns.DNS(this, "dns", {
             domain: "frigon.app",
             emailConfiguration: {
                 mxa: "mxa.mailgun.org",
