@@ -19,11 +19,9 @@
   "type": "module",
   "bin": "bin/app.ts",
   "scripts": {
-    "lint": "eslint --fix app lib eslint.config.mjs",
+    "lint": "eslint --fix bin lib",
     "type-check": "tsc --noEmit",
-    "synth": "cdk synth",
-    "diff": "cdk diff",
-    "deploy": "cdk deploy --all"
+    "deploy-foundation": "cdk deploy foundation-stack"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
@@ -36,6 +34,7 @@
   },
   "dependencies": {
     "aws-cdk-lib": "^2.219.0",
-    "constructs": "^10.4.2"
+    "constructs": "^10.4.2",
+    "xehos-cdk-lib": "github:afrigon/xehos-cdk-lib"
   }
 }
