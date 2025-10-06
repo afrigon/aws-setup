@@ -4,5 +4,5 @@ import { FrigonStack } from "../lib/frigon.ts"
 
 const app = new cdk.App()
 
-new FoundationStack(app, "foundation")
-new FrigonStack(app, "frigon")
+new FoundationStack(app, "Foundation")
+new FrigonStack(app, "Frigon")

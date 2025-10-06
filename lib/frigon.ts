@@ -6,7 +6,7 @@ export class FrigonStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props)
 
-        new dns.DNS(this, "dns", {
+        new dns.DNS(this, "DNS", {
             domain: "frigon.app",
             emailConfiguration: {
                 mxa: "mxa.mailgun.org",

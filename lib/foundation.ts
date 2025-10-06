@@ -8,9 +8,9 @@ export class FoundationStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props)
 
-        new github.OpenIdConnectProvider(this, "oidc-provider")
+        new github.GithubOpenIdConnectProvider(this, "Provider")
 
-        const bootstrapPolicy = new iam.ManagedPolicy(this, "bootstrap_cdk", {
+        const bootstrapPolicy = new iam.ManagedPolicy(this, "BootstrapCDK", {
             description: "base policy required to bootstrap cdk",
             statements: [
                 new iam.PolicyStatement({
@@ -26,7 +26,7 @@ export class FoundationStack extends Stack {
             ]
         })
 
-        const policy = new iam.ManagedPolicy(this, "aws_setup", {
+        const policy = new iam.ManagedPolicy(this, "AWSSetup", {
             statements: [
                 new iam.PolicyStatement({
                     actions: [
@@ -37,7 +37,7 @@ export class FoundationStack extends Stack {
             ]
         })
 
-        new github.GithubActionRole(this, "github_actions", {
+        new github.GithubActionRole(this, "GithubActions", {
             repository: new github.GithubRepositoryIdentifier("afrigon", "aws-setup"),
             policies: [
                 bootstrapPolicy,

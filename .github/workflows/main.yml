@@ -14,7 +14,7 @@ env:
   NODE_VERSION: 22
   AWS_REGION: us-east-1
   AWS_ROLE: arn:aws:iam::944671670298:role/foundation-githubactionsafrigonawssetup693AD79C-JzKNq1Hcgtmc
-  CDK_STACKS: "frigon"
+  CDK_STACKS: "Frigon"
 
 jobs:
   deploy:
