@@ -1,6 +1,6 @@
 {
   "name": "aws-setup",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "personal aws setup",
   "keywords": [
     "aws",
@@ -13,7 +13,7 @@
   "scripts": {
     "lint": "eslint --fix bin lib",
     "type-check": "tsc --noEmit",
-    "deploy-foundation": "cdk deploy Foundation"
+    "deploy-core": "cdk deploy Core"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
