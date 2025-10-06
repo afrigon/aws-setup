@@ -50,7 +50,7 @@ export class FoundationStack extends Stack {
             subscriptionType: "EMAIL"
         }
 
-        new budgets.CfnBudget(this, "monthly", {
+        new budgets.CfnBudget(this, "Monthly", {
             budget: {
                 budgetType: "COST",
                 timeUnit: "MONTHLY",
