@@ -1,19 +1,11 @@
 {
-  "name": "aws",
-  "version": "1.0.0",
+  "name": "aws-setup",
+  "version": "0.0.1",
   "description": "personal aws setup",
   "keywords": [
     "aws",
     "config"
   ],
-  "homepage": "https://github.com/afrigon/.aws#readme",
-  "bugs": {
-    "url": "https://github.com/afrigon/.aws/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/afrigon/.aws.git"
-  },
   "license": "MIT",
   "author": "xehos",
   "type": "module",
