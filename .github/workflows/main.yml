@@ -13,7 +13,7 @@ permissions:
 env:
   NODE_VERSION: 22
   AWS_REGION: us-east-1
-  AWS_ROLE: arn:aws:iam::944671670298:role/Foundation-GithubActionsAfrigonAwsSetup5FFA3D6F-ukoTcdOQZrcX
+  AWS_ROLE: arn:aws:iam::944671670298:role/Core-AwsSetupRoleAfrigonAwsSetupE9E6124E-zUJcSF9xsBDb
   CDK_STACKS: "Frigon"
 
 jobs:

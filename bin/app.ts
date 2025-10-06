@@ -1,8 +1,18 @@
 import * as cdk from "aws-cdk-lib"
+import { CoreStack } from "../lib/core.js"
 import { FoundationStack } from "../lib/foundation.js"
 import { FrigonStack } from "../lib/frigon.ts"
 
 const app = new cdk.App()
 
-new FoundationStack(app, "Foundation")
-new FrigonStack(app, "Frigon")
+new CoreStack(app, "Core", { 
+    description: "This stack includes resources needed to run the aws-setup CI"
+})
+
+new FoundationStack(app, "Foundation", { 
+    description: "This stack creates users used on other projects and account wide configurations"
+})
+
+new FrigonStack(app, "Frigon", {
+    description: "This stack includes resources for the frigon.app domain"
+})
