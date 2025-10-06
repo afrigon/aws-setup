@@ -13,7 +13,7 @@ permissions:
 env:
   NODE_VERSION: 22
   AWS_REGION: us-east-1
-  AWS_ROLE: TODO_REPLACE_WITH_ARN
+  AWS_ROLE: arn:aws:iam::944671670298:role/foundation-githubactionsafrigonawssetup693AD79C-JzKNq1Hcgtmc
   CDK_STACKS: "frigon"
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: $NODE_VERSION
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Install Dependencies
@@ -33,12 +33,12 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5.0.0
         with:
-          aws-region: $AWS_REGION
-          role-to-assume: $AWS_ROLE
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ROLE }}
           role-session-name: aws-setup-ci-session
 
       - name: CDK synth
         run: npx cdk synth
 
       - name: CDK deploy
-        run: npx cdk deploy $CDK_STACKS --require-approval never --verbose
+        run: npx cdk deploy ${{ env.CDK_STACKS }} --require-approval never --verbose
