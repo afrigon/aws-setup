@@ -5,14 +5,19 @@ import { FrigonStack } from "../lib/frigon.ts"
 
 const app = new cdk.App()
 
+const env = { account: process.env.AWS_ACCOUNT, region: process.env.AWS_REGION }
+
 new CoreStack(app, "Core", { 
-    description: "This stack includes resources needed to run the aws-setup CI"
+    description: "This stack includes resources needed to run the aws-setup CI",
+    env
 })
 
 new FoundationStack(app, "Foundation", { 
-    description: "This stack creates users used on other projects and account wide configurations"
+    description: "This stack creates users used on other projects and account wide configurations",
+    env
 })
 
 new FrigonStack(app, "Frigon", {
-    description: "This stack includes resources for the frigon.app domain"
+    description: "This stack includes resources for the frigon.app domain",
+    env
 })
