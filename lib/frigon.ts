@@ -15,5 +15,11 @@ export class FrigonStack extends Stack {
                 dkim: "k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDaHU9ZpyHxZ1fKH2t3czU+OH7vsca9H5evUb1bfKhGuUo+8oWv1RonmtqDcRd+gfwEv5Rj2y2DDKJrU9KKVSClOF0ZZSENj7Pzoc4N6o4y8gXOT91Q1AIwS9/Twg/nc4tCEMREPg+RuYstlSEXNnFIYeTND+vqPfkfKC/+16RQHQIDAQAB"
             }
         })
+
+        new dns.ARecord(this, "home", {
+            addresses: ["107.171.186.150"],
+            domainName: "frigon.app",
+            subdomainName: "home"
+        })
     }
 }
