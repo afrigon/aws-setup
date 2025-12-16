@@ -53,7 +53,45 @@ export class FoundationStack extends Stack {
 
         new CIRole(this, "Resume", {
             repository: new github.GithubRepositoryIdentifier("afrigon", "resume"),
-            actions: []
+            actions: [
+                // Route53 - for hosted zone lookup (synth) and DNS records
+                "route53:ListHostedZonesByName",
+                "route53:ChangeResourceRecordSets",
+                // ACM - for certificate creation and DNS validation
+                "acm:RequestCertificate",
+                "acm:DescribeCertificate",
+                // S3 - for bucket creation and BucketDeployment (with prune)
+                "s3:CreateBucket",
+                "s3:PutBucketEncryption",
+                "s3:PutBucketPublicAccessBlock",
+                "s3:PutBucketVersioning",
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject",
+                "s3:ListBucket",
+                // CloudFront - for distribution and cache invalidation
+                "cloudfront:CreateDistribution",
+                "cloudfront:UpdateDistribution",
+                "cloudfront:GetDistribution",
+                "cloudfront:CreateInvalidation",
+                // IAM - for CloudFront OAC role and Lambda execution roles
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:GetRole",
+                "iam:PassRole",
+                "iam:PutRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                // Lambda - for BucketDeployment custom resource handler
+                "lambda:CreateFunction",
+                "lambda:UpdateFunctionCode",
+                "lambda:DeleteFunction",
+                "lambda:GetFunction",
+                "lambda:InvokeFunction",
+                "lambda:AddPermission",
+                "lambda:RemovePermission"
+            ]
         })
     }
 }
