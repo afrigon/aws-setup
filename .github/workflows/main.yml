@@ -15,7 +15,7 @@ env:
   AWS_REGION: us-east-1
   AWS_ACCOUNT: "944671670298"
   AWS_ROLE: arn:aws:iam::944671670298:role/GithubActions-afrigon-aws-setup
-  CDK_STACKS: "Foundation Frigon"
+  CDK_STACKS: "Foundation Frigon X"
 
 jobs:
   deploy:
