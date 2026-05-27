@@ -79,7 +79,8 @@ module "foundation_role" {
       actions = [
         "iam:ListOpenIDConnectProviders",
         "iam:GetRole",
-        "iam:CreateRole"
+        "iam:CreateRole",
+        "iam:ListRolePolicies"
       ],
       resources = ["*"]
     },
