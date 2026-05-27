@@ -1,6 +1,7 @@
 import { Stack, StackProps } from "aws-cdk-lib"
 import { Construct } from "constructs"
 import * as dns from "xehos-cdk-lib/dns"
+import * as r53 from "aws-cdk-lib/aws-route53"
 
 export class FrigonStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
@@ -16,10 +17,15 @@ export class FrigonStack extends Stack {
             }
         })
 
-        new dns.ARecord(this, "home", {
-            addresses: ["107.171.186.150"],
-            domainName: "frigon.app",
-            subdomainName: "home"
+        // Home Lab Subdomain
+        const zone = r53.PublicHostedZone.fromLookup(this, "zone", {
+            domainName: "frigon.app"
+        })
+
+        new r53.ARecord(this, "A-home", {
+            zone,
+            recordName: "home",
+            target: r53.RecordTarget.fromIpAddresses("107.171.186.150")
         })
     }
 }
