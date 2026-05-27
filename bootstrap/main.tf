@@ -80,7 +80,11 @@ module "foundation_role" {
         "iam:ListOpenIDConnectProviders",
         "iam:GetRole",
         "iam:CreateRole",
-        "iam:ListRolePolicies"
+        "iam:DeleteRole",
+        "iam:GetRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies"
       ],
       resources = ["*"]
     },

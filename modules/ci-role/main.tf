@@ -46,7 +46,7 @@ locals {
   ]
 }
 
-resource "aws_iam_role_policy" "state_policy" {
+resource "aws_iam_role_policy" "default_policy" {
   count = length(local.default_permissions) > 0 ? 1 : 0
   role  = aws_iam_role.role.name
   policy = jsonencode({
