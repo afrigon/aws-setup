@@ -22,10 +22,10 @@ export class FrigonStack extends Stack {
             domainName: "frigon.app"
         })
 
-        // new r53.ARecord(this, "A-home", {
-        //     zone,
-        //     recordName: "home",
-        //     target: r53.RecordTarget.fromIpAddresses("107.171.186.150")
-        // })
+        new r53.ARecord(this, "A-home", {
+            zone,
+            recordName: "home",
+            target: r53.RecordTarget.fromIpAddresses("107.171.186.150")
+        })
     }
 }
