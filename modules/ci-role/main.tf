@@ -30,7 +30,7 @@ resource "aws_iam_role" "role" {
 }
 
 locals {
-  state_permissions = [
+  default_permissions = [
     {
       actions   = ["s3:ListBucket"],
       resources = [data.aws_s3_bucket.state_bucket.arn]
@@ -42,16 +42,20 @@ locals {
     {
       actions   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
       resources = ["${data.aws_s3_bucket.state_bucket.arn}/${var.name}.tfstate.tflock"]
+    },
+    {
+      actions   = ["iam:ListOpenIDConnectProviders"],
+      resources = [data.aws_iam_openid_connect_provider.github.arn]
     }
   ]
 }
 
 resource "aws_iam_role_policy" "state_policy" {
-  count = length(local.state_permissions) > 0 ? 1 : 0
+  count = length(local.default_permissions) > 0 ? 1 : 0
   role  = aws_iam_role.role.name
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [for p in local.state_permissions : {
+    Statement = [for p in local.default_permissions : {
       Effect   = "Allow"
       Action   = p.actions
       Resource = p.resources

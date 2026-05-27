@@ -1,5 +1,5 @@
 name: deploy
-run-name: "CDK deploy (${{ github.ref_name }})"
+run-name: "Terraform deploy (${{ github.ref_name }})"
 
 on:
   push:
