@@ -82,6 +82,7 @@ module "foundation_role" {
         "iam:CreateRole",
         "iam:DeleteRole",
         "iam:GetRolePolicy",
+        "iam:PutRolePolicy",
         "iam:DeleteRolePolicy",
         "iam:ListRolePolicies",
         "iam:ListAttachedRolePolicies",
