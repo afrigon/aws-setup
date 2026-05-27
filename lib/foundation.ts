@@ -109,5 +109,7 @@ export class FoundationStack extends Stack {
                 "acm:DescribeCertificate"
             ]
         })
+
+        // TODO: review the permissions given here, there is something fishy with CIRoles having way more permissions than what is given
     }
 }
