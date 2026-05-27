@@ -42,10 +42,6 @@ locals {
     {
       actions   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
       resources = ["${data.aws_s3_bucket.state_bucket.arn}/${var.name}.tfstate.tflock"]
-    },
-    {
-      actions   = ["iam:ListOpenIDConnectProviders"],
-      resources = [data.aws_iam_openid_connect_provider.github.arn]
     }
   ]
 }

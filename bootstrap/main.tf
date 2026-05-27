@@ -74,4 +74,18 @@ module "foundation_role" {
   name   = local.role_name
   state_bucket = var.state_bucket
   github = var.github
+  permissions = [
+    {
+      actions   = ["iam:ListOpenIDConnectProviders"],
+      resources = ["*"]
+    },
+    {
+      actions   = ["iam:GetOpenIDConnectProvider"],
+      resources = [aws_iam_openid_connect_provider.github.arn]
+    },
+    {
+      actions   = ["iam:CreateRole"],
+      resources = ["*"]
+    }
+  ]
 }
