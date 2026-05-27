@@ -2,6 +2,7 @@ import * as cdk from "aws-cdk-lib"
 import { CoreStack } from "../lib/core.js"
 import { FoundationStack } from "../lib/foundation.js"
 import { FrigonStack } from "../lib/frigon.ts"
+import { XStack } from "../lib/x.ts"
 
 const app = new cdk.App()
 
@@ -19,5 +20,10 @@ new FoundationStack(app, "Foundation", {
 
 new FrigonStack(app, "Frigon", {
     description: "This stack includes resources for the frigon.app domain",
+    env
+})
+
+new XStack(app, "X", {
+    description: "This stack includes resources for the x-lang.dev domain",
     env
 })

@@ -99,5 +99,15 @@ export class FoundationStack extends Stack {
                 "ec2:*"
             ]
         })
+
+        new CIRole(this, "x-lang", {
+            repository: new github.GithubRepositoryIdentifier("afrigon", "x-lang"),
+            actions: [
+                "route53:ListHostedZonesByName",
+                "route53:ChangeResourceRecordSets",
+                "acm:RequestCertificate",
+                "acm:DescribeCertificate"
+            ]
+        })
     }
 }
