@@ -9,7 +9,7 @@ terraform {
   }
 
   backend "s3" {
-    encrypt = true
+    encrypt      = true
     use_lockfile = true
   }
 }
@@ -64,28 +64,28 @@ resource "aws_iam_openid_connect_provider" "github" {
 // Foundation Role
 
 locals {
-    role_name = "foundation"
+  role_name = "foundation"
 }
 
 module "foundation_role" {
-  source = "../modules/ci-role"
-  depends_on = [ aws_iam_openid_connect_provider.github ]
+  source     = "../modules/ci-role"
+  depends_on = [aws_iam_openid_connect_provider.github]
 
-  name   = local.role_name
+  name         = local.role_name
   state_bucket = var.state_bucket
-  github = var.github
+  github       = var.github
   permissions = [
     {
-      actions   = ["iam:ListOpenIDConnectProviders"],
+      actions = [
+        "iam:ListOpenIDConnectProviders",
+        "iam:GetRole",
+        "iam:CreateRole"
+      ],
       resources = ["*"]
     },
     {
       actions   = ["iam:GetOpenIDConnectProvider"],
       resources = [aws_iam_openid_connect_provider.github.arn]
-    },
-    {
-      actions   = ["iam:CreateRole"],
-      resources = ["*"]
     }
   ]
 }
