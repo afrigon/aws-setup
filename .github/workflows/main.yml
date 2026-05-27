@@ -31,14 +31,14 @@ jobs:
       - uses: hashicorp/setup-terraform@v4
 
       - name: Deploy Foundation
-      - working-directory: ./foundation
-      - env:
-        TF_VAR_name: "foundation"
-      - run: |
-        terraform init \
-          -backend-config="bucket=$(TF_VAR_state_bucket)" \
-          -backend-config="key=$(TF_VAR_name).tfstate" \
-          -backend-config="region=$(AWS_REGION)"
+        working-directory: ./foundation
+        env:
+          TF_VAR_name: "foundation"
+        run: |
+          terraform init \
+            -backend-config="bucket=${TF_VAR_state_bucket}" \
+            -backend-config="key=${TF_VAR_name}.tfstate" \
+            -backend-config="region=${AWS_REGION}"
 
-        terraform plan -out=planout
-        terraform apply planout
+          terraform plan -out=planout
+          terraform apply planout
