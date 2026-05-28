@@ -101,7 +101,7 @@ resource "aws_route53domains_delegation_signer_record" "ds" {
   domain_name = var.domain
 
   signing_attributes {
-    algorithm  = aws_route53_key_signing_key.signing_key.signing_algorithm_type
+    algorithm  = aws_route53_key_signing_key.signing_key.signing_algorithm_mnemonic
     flags      = aws_route53_key_signing_key.signing_key.flag
     public_key = aws_route53_key_signing_key.signing_key.public_key
   }
