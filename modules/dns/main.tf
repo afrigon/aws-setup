@@ -65,8 +65,14 @@ resource "aws_route53_hosted_zone_dnssec" "dnssec" {
 }
 
 resource "aws_route53domains_registered_domain" "domain" {
-  count = var.is_aws_domains ? 1 : 0
+  count       = var.is_aws_domains ? 1 : 0
   domain_name = var.domain
+  auto_renew = true
+  transfer_lock = true
+  admin_privacy = true
+  registrant_privacy = true
+  tech_privacy = true
+  billing_privacy = true
 
   dynamic "name_server" {
     for_each = aws_route53_zone.zone.name_servers
@@ -75,10 +81,19 @@ resource "aws_route53domains_registered_domain" "domain" {
       name = name_server.value
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      admin_contact,
+      registrant_contact,
+      tech_contact,
+      billing_contact
+    ]
+  }
 }
 
 resource "aws_route53domains_delegation_signer_record" "ds" {
-  count = var.is_aws_domains ? 1 : 0
+  count       = var.is_aws_domains ? 1 : 0
   domain_name = var.domain
 
   signing_attributes {

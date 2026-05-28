@@ -107,7 +107,19 @@ module "foundation_role" {
         "route53:DisableHostedZoneDNSSEC",
         "route53:EnableHostedZoneDNSSEC",
         "route53:GetDNSSEC",
-        "kms:CrateKey"
+        "route53domains:GetDomainDetail",
+        "route53domains:UpdateDomainNameservers",
+        "route53domains:AssociateDelegationSignerToDomain",
+        "route53domains:DisassociateDelegationSignerFromDomain",
+        "route53domains:GetOperationDetail",
+        "route53domains:ListTagsForDomain",
+        "kms:CreateKey",
+        "kms:DescribeKey",
+        "kms:ScheduleKeyDeletion",
+        "kms:CancelKeyDeletion",
+        "kms:GetKeyPolicy",
+        "kms:PutKeyPolicy",
+        "kms:ListResourceTags"
       ],
       resources = ["*"]
     },
