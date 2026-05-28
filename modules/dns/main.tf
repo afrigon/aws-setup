@@ -26,10 +26,8 @@ resource "aws_kms_key" "key" {
         ]
         Resource = "*"
         Condition = {
-          StringEquals = {
-            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
-            "aws:SourceArn"     = aws_route53_zone.zone.arn
-          }
+          StringEquals = { "aws:SourceAccount" = data.aws_caller_identity.current.account_id }
+          ArnLike      = { "aws:SourceArn" = "arn:aws:route53:::hostedzone/*" }
         }
       },
       {

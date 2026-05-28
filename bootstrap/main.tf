@@ -119,6 +119,7 @@ module "foundation_role" {
         "kms:CancelKeyDeletion",
         "kms:GetKeyPolicy",
         "kms:PutKeyPolicy",
+        "kms:GetKeyRotationStatus",
         "kms:ListResourceTags"
       ],
       resources = ["*"]
