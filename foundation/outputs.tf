@@ -14,36 +14,12 @@ output "xlang_role" {
 
 // frigon DNS
 
-output "frigon_name_servers_1" {
-    value = module.frigon_app_dns.name_servers_1
-}
-
-output "frigon_name_servers_2" {
-    value = module.frigon_app_dns.name_servers_2
-}
-
-output "frigon_name_servers_3" {
-    value = module.frigon_app_dns.name_servers_3
-}
-
-output "frigon_name_servers_4" {
-    value = module.frigon_app_dns.name_servers_4
+output "frigon_name_servers" {
+    value = module.frigon_app_dns.name_servers
 }
 
 // x-lang DNS
 
-output "xlang_name_servers_1" {
-    value = module.xlang_dev_dns.name_servers_1
-}
-
-output "xlang_name_servers_2" {
-    value = module.xlang_dev_dns.name_servers_2
-}
-
-output "xlang_name_servers_3" {
-    value = module.xlang_dev_dns.name_servers_3
-}
-
-output "xlang_name_servers_4" {
-    value = module.xlang_dev_dns.name_servers_4
+output "xlang_name_servers" {
+    value = module.xlang_dev_dns.name_servers
 }

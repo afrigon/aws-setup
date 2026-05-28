@@ -8,6 +8,7 @@ resource "aws_route53_zone" "zone" {
 // DNSSEC
 
 resource "aws_kms_key" "key" {
+  provider                 = aws.us_east_1
   customer_master_key_spec = "ECC_NIST_P256"
   deletion_window_in_days  = 7
   key_usage                = "SIGN_VERIFY"
@@ -52,20 +53,21 @@ resource "aws_kms_key" "key" {
 }
 
 resource "aws_route53_key_signing_key" "signing_key" {
-  hosted_zone_id             = aws_route53_zone.zone.id
+  hosted_zone_id             = aws_route53_zone.zone.zone_id
   key_management_service_arn = aws_kms_key.key.arn
   name                       = replace(var.domain, ".", "_")
 }
 
 resource "aws_route53domains_registered_domain" "domain" {
-  count       = var.is_aws_domains ? 1 : 0
-  domain_name = var.domain
-  auto_renew = true
-  transfer_lock = true
-  admin_privacy = true
+  provider           = aws.us_east_1
+  count              = var.is_aws_domains ? 1 : 0
+  domain_name        = var.domain
+  auto_renew         = true
+  transfer_lock      = true
+  admin_privacy      = true
   registrant_privacy = true
-  tech_privacy = true
-  billing_privacy = true
+  tech_privacy       = true
+  billing_privacy    = true
 
   dynamic "name_server" {
     for_each = aws_route53_zone.zone.name_servers
@@ -85,9 +87,6 @@ resource "aws_route53domains_registered_domain" "domain" {
   }
 }
 
-// Enable DNSSEC after the registrar's nameservers point at this zone.
-// Route 53's EnableHostedZoneDNSSEC verifies delegation at the parent TLD
-// before it will enable signing.
 resource "aws_route53_hosted_zone_dnssec" "dnssec" {
   hosted_zone_id = aws_route53_key_signing_key.signing_key.hosted_zone_id
 
@@ -97,11 +96,12 @@ resource "aws_route53_hosted_zone_dnssec" "dnssec" {
 }
 
 resource "aws_route53domains_delegation_signer_record" "ds" {
+  provider    = aws.us_east_1
   count       = var.is_aws_domains ? 1 : 0
   domain_name = var.domain
 
   signing_attributes {
-    algorithm  = aws_route53_key_signing_key.signing_key.signing_algorithm_mnemonic
+    algorithm  = aws_route53_key_signing_key.signing_key.signing_algorithm_type
     flags      = aws_route53_key_signing_key.signing_key.flag
     public_key = aws_route53_key_signing_key.signing_key.public_key
   }

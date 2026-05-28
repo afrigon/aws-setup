@@ -18,6 +18,11 @@ provider "aws" {
   region = var.region
 }
 
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
+
 locals {
   owner = "afrigon"
 }
@@ -66,6 +71,11 @@ module "xlang_role" {
 module "frigon_app_dns" {
   source = "../modules/dns"
 
+  providers = {
+    aws           = aws
+    aws.us_east_1 = aws.us_east_1
+  }
+
   domain = "frigon.app"
   is_aws_domains = false
   email_configuration = {
@@ -88,6 +98,11 @@ resource "aws_route53_record" "home" {
 
 module "xlang_dev_dns" {
   source = "../modules/dns"
+
+  providers = {
+    aws           = aws
+    aws.us_east_1 = aws.us_east_1
+  }
 
   domain = "x-lang.dev"
   is_aws_domains = true
