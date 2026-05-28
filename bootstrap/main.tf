@@ -99,7 +99,15 @@ module "foundation_role" {
         "route53:ListResourceRecordSets",
         "route53:ChangeResourceRecordSets",
         "route53:GetChange",
-        "route53:ListTagsForResource"
+        "route53:ListTagsForResource",
+        "route53:ActivateKeySigningKey",
+        "route53:CreateKeySigningKey",
+        "route53:DeactivateKeySigningKey",
+        "route53:DeleteKeySigningKey",
+        "route53:DisableHostedZoneDNSSEC",
+        "route53:EnableHostedZoneDNSSEC",
+        "route53:GetDNSSEC",
+        "kms:CrateKey"
       ],
       resources = ["*"]
     },

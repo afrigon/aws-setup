@@ -67,6 +67,7 @@ module "frigon_app_dns" {
   source = "../modules/dns"
 
   domain = "frigon.app"
+  is_aws_domains = false
   email_configuration = {
     mxa = "mxa.mailgun.org"
     mxb = "mxb.mailgun.org"
@@ -89,4 +90,5 @@ module "xlang_dev_dns" {
   source = "../modules/dns"
 
   domain = "x-lang.dev"
+  is_aws_domains = true
 }
