@@ -97,7 +97,9 @@ module "foundation_role" {
         "route53:CreateHostedZone",
         "route53:DeleteHostedZone",
         "route53:ListResourceRecordSets",
-        "route53:ChangeResourceRecordSets"
+        "route53:ChangeResourceRecordSets",
+        "route53:GetChange",
+        "route53:ListTagsForResource"
       ],
       resources = ["*"]
     },
