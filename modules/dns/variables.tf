@@ -4,12 +4,12 @@ variable "domain" {
 }
 
 variable "email_configuration" {
-  type = optional(object({
+  type = object({
     mxa  = string
     mxb  = string
     spf  = string
     dkim = string
-  }))
+  })
   description = "The email related records for this zone"
-  default = null
+  default     = null
 }
