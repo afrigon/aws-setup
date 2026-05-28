@@ -89,11 +89,11 @@ resource "aws_route53domains_registered_domain" "domain" {
 // Route 53's EnableHostedZoneDNSSEC verifies delegation at the parent TLD
 // before it will enable signing.
 resource "aws_route53_hosted_zone_dnssec" "dnssec" {
-  depends_on = [
-    aws_route53_key_signing_key.signing_key,
-    aws_route53domains_registered_domain.domain,
-  ]
   hosted_zone_id = aws_route53_key_signing_key.signing_key.hosted_zone_id
+
+  depends_on = [
+    aws_route53_key_signing_key.signing_key
+  ]
 }
 
 resource "aws_route53domains_delegation_signer_record" "ds" {
