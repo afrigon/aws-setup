@@ -57,11 +57,6 @@ resource "aws_route53_key_signing_key" "signing_key" {
   name                       = replace(var.domain, ".", "_")
 }
 
-resource "aws_route53_hosted_zone_dnssec" "dnssec" {
-  depends_on     = [aws_route53_key_signing_key.signing_key]
-  hosted_zone_id = aws_route53_key_signing_key.signing_key.hosted_zone_id
-}
-
 resource "aws_route53domains_registered_domain" "domain" {
   count       = var.is_aws_domains ? 1 : 0
   domain_name = var.domain
@@ -88,6 +83,17 @@ resource "aws_route53domains_registered_domain" "domain" {
       billing_contact
     ]
   }
+}
+
+// Enable DNSSEC after the registrar's nameservers point at this zone.
+// Route 53's EnableHostedZoneDNSSEC verifies delegation at the parent TLD
+// before it will enable signing.
+resource "aws_route53_hosted_zone_dnssec" "dnssec" {
+  depends_on = [
+    aws_route53_key_signing_key.signing_key,
+    aws_route53domains_registered_domain.domain,
+  ]
+  hosted_zone_id = aws_route53_key_signing_key.signing_key.hosted_zone_id
 }
 
 resource "aws_route53domains_delegation_signer_record" "ds" {
