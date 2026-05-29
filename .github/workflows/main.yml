@@ -11,7 +11,6 @@ permissions:
   contents: read
 
 env:
-  TF_VAR_state_bucket: "terraform-xehos"
   AWS_REGION: us-east-1
   AWS_ROLE: arn:aws:iam::944671670298:role/terraform-foundation
 
@@ -32,13 +31,7 @@ jobs:
 
       - name: Deploy Foundation
         working-directory: ./foundation
-        env:
-          TF_VAR_name: "foundation"
         run: |
-          terraform init \
-            -backend-config="bucket=${TF_VAR_state_bucket}" \
-            -backend-config="key=${TF_VAR_name}.tfstate" \
-            -backend-config="region=${AWS_REGION}"
-
+          terraform init
           terraform plan -out=planout
           terraform apply planout

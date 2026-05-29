@@ -55,24 +55,17 @@ resource "aws_route53_hosted_zone_dnssec" "dnssec" {
   hosted_zone_id = aws_route53_key_signing_key.signing_key.hosted_zone_id
 }
 
-// Wait for DS removal at the parent to propagate before disabling DNSSEC.
-// DisableHostedZoneDNSSEC checks the parent and fails if the DS is still there.
-resource "time_sleep" "wait_for_ds_propagation" {
-  depends_on       = [aws_route53_hosted_zone_dnssec.dnssec]
-  destroy_duration = "300s"
-}
-
-resource "aws_route53domains_delegation_signer_record" "ds" {
-  provider    = aws.us_east_1
-  domain_name = var.domain
-
-  signing_attributes {
-    algorithm  = aws_route53_key_signing_key.signing_key.signing_algorithm_type
-    flags      = aws_route53_key_signing_key.signing_key.flag
-    public_key = aws_route53_key_signing_key.signing_key.public_key
-  }
-
-  depends_on = [
-    time_sleep.wait_for_ds_propagation,
-  ]
-}
+// The DS record at the parent registrar is intentionally NOT managed here.
+// `aws_route53domains_delegation_signer_record` has a deterministic bug: its
+// post-create lookup filters on Flags + PublicKey, but GetDomainDetail does
+// not return those fields, so the filter never matches and Create aborts
+// with "empty result" after the DS has already been associated. Re-applying
+// pushes duplicate DS records to the registrar.
+//
+// Bug:  https://github.com/hashicorp/terraform-provider-aws/issues/47928
+// Fix:  https://github.com/hashicorp/terraform-provider-aws/pull/47932
+//
+// Until the fix ships, run the `dnssec_associate_command` output once after
+// `apply` to register the DS at the registrar. To tear down, disassociate
+// the DS manually before `terraform destroy` (see `dnssec_disassociate_command`),
+// otherwise DisableHostedZoneDNSSEC fails with KeySigningKeyInParentDSRecord.

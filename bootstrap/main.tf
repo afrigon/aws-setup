@@ -4,11 +4,14 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 6.47"
     }
   }
 
   backend "s3" {
+    bucket       = "terraform-xehos"
+    key          = "bootstrap.tfstate"
+    region       = "us-east-1"
     encrypt      = true
     use_lockfile = true
   }
@@ -18,10 +21,15 @@ provider "aws" {
   region = var.region
 }
 
+locals {
+  state_bucket    = "terraform-xehos"
+  foundation_role = "foundation"
+}
+
 // Terraform State Bucket
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = var.state_bucket
+  bucket = local.state_bucket
 
   lifecycle {
     prevent_destroy = true
@@ -69,16 +77,12 @@ data "aws_iam_session_context" "current" {
 
 // Foundation Role
 
-locals {
-  role_name = "foundation"
-}
-
 module "foundation_role" {
   source     = "../modules/ci-role"
   depends_on = [aws_iam_openid_connect_provider.github]
 
-  name         = local.role_name
-  state_bucket = var.state_bucket
+  name         = local.foundation_role
+  state_bucket = local.state_bucket
   github       = var.github
   permissions = [
     {
@@ -109,8 +113,6 @@ module "foundation_role" {
         "route53:GetDNSSEC",
         "route53domains:GetDomainDetail",
         "route53domains:UpdateDomainNameservers",
-        "route53domains:AssociateDelegationSignerToDomain",
-        "route53domains:DisassociateDelegationSignerFromDomain",
         "route53domains:GetOperationDetail",
         "route53domains:ListTagsForDomain",
         "kms:CreateKey",

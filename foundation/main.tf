@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 6.47"
     }
     time = {
       source  = "hashicorp/time"
@@ -13,6 +13,9 @@ terraform {
   }
 
   backend "s3" {
+    bucket       = "terraform-xehos"
+    key          = "foundation.tfstate"
+    region       = "us-east-1"
     encrypt      = true
     use_lockfile = true
   }
@@ -28,7 +31,8 @@ provider "aws" {
 }
 
 locals {
-  owner = "afrigon"
+  owner        = "afrigon"
+  state_bucket = "terraform-xehos"
 }
 
 // Resume Role
@@ -37,7 +41,7 @@ module "resume_role" {
   source = "../modules/ci-role"
 
   name         = "resume"
-  state_bucket = var.state_bucket
+  state_bucket = local.state_bucket
   github = {
     owner      = local.owner
     repository = "resume"
@@ -50,20 +54,20 @@ module "minecraft_role" {
   source = "../modules/ci-role"
 
   name         = "minecraft"
-  state_bucket = var.state_bucket
+  state_bucket = local.state_bucket
   github = {
     owner      = local.owner
     repository = "minecraft-server"
   }
 }
 
-// x-lang Role
+// xlang Role
 
 module "xlang_role" {
   source = "../modules/ci-role"
 
   name         = "xlang"
-  state_bucket = var.state_bucket
+  state_bucket = local.state_bucket
   github = {
     owner      = local.owner
     repository = "x-lang"
@@ -106,7 +110,7 @@ resource "aws_route53_record" "home" {
   ttl     = local.default_ttl
 }
 
-# x-lang.dev dns
+# xlang.dev dns
 
 module "xlang_dev_dns" {
   source = "../modules/dns"
@@ -118,7 +122,7 @@ module "xlang_dev_dns" {
 
   domain           = local.xlang_domain
   update_registrar = true
-  default_ttl = local.default_ttl
+  default_ttl      = local.default_ttl
 }
 
 // Wait for new NS records to propagate from Amazon Registrar through IANA

@@ -4,12 +4,8 @@ terraform {
   required_providers {
     aws = {
       source                = "hashicorp/aws"
-      version               = "~> 5.0"
+      version               = "~> 6.47"
       configuration_aliases = [aws.us_east_1]
-    }
-    time = {
-      source  = "hashicorp/time"
-      version = "~> 0.9"
     }
   }
 }
