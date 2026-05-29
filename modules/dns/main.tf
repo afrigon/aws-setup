@@ -95,6 +95,12 @@ resource "aws_route53_hosted_zone_dnssec" "dnssec" {
   ]
 }
 
+resource "time_sleep" "wait_for_ds_propagation" {
+  count            = var.is_aws_domains ? 1 : 0
+  depends_on       = [aws_route53_hosted_zone_dnssec.dnssec]
+  destroy_duration = "300s"
+}
+
 resource "aws_route53domains_delegation_signer_record" "ds" {
   provider    = aws.us_east_1
   count       = var.is_aws_domains ? 1 : 0
@@ -107,7 +113,7 @@ resource "aws_route53domains_delegation_signer_record" "ds" {
   }
 
   depends_on = [
-    aws_route53_hosted_zone_dnssec.dnssec,
+    time_sleep.wait_for_ds_propagation,
     aws_route53domains_registered_domain.domain,
   ]
 }
