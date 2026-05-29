@@ -99,6 +99,7 @@ module "resume_role" {
         "route53:GetHostedZone",
         "route53:ChangeResourceRecordSets",
         "route53:ListResourceRecordSets",
+        "route53:ListTagsForResource",
         "route53:GetChange"
       ]
       resources = ["*"]
