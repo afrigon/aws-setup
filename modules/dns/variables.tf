@@ -14,8 +14,14 @@ variable "email_configuration" {
   default     = null
 }
 
-variable "is_aws_domains" {
+variable "update_registrar" {
   type        = bool
-  description = "Whether this domain is registered through Route 53 Domains. When true, the module manages the registrar's nameservers and publishes the DNSSEC DS record."
+  description = "Whether to push this zone's nameservers to the Route 53 Domains registrar. Only applies to domains registered through Route 53 Domains."
   default     = false
+}
+
+variable "default_ttl" {
+  type        = number
+  description = "The default time to live for dns records"
+  default     = 1800
 }

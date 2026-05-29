@@ -60,8 +60,8 @@ resource "aws_iam_role_policy" "default_policy" {
 }
 
 resource "aws_iam_role_policy" "inline-policy" {
-  count  = length(var.permissions) > 0 ? 1 : 0
-  role   = aws_iam_role.role.name
+  count = length(var.permissions) > 0 ? 1 : 0
+  role  = aws_iam_role.role.name
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [for p in var.permissions : {
